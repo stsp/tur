@@ -3,9 +3,9 @@ TERMUX_PKG_DESCRIPTION="thunk generator for C and assembler"
 TERMUX_PKG_LICENSE="GPL-3.0"
 TERMUX_PKG_MAINTAINER="@stsp"
 TERMUX_PKG_VERSION="1.6"
-TERMUX_PKG_REVISION=2
-TERMUX_PKG_SRCURL=https://github.com/stsp/thunk_gen/archive/refs/tags/${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=d9252429b9998d8ccc68eaafa3d6504d4a9f47dc8068a841c4084658d0f2c9cf
+TERMUX_PKG_REVISION=99
+TERMUX_PKG_SRCURL=git+https://github.com/stsp/thunk_gen
+TERMUX_PKG_GIT_BRANCH=main
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_BUILD_DEPENDS="flex, bison"
 # As strange as it may seem, this package uses autoconf and pkg-config
