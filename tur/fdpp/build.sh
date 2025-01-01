@@ -3,8 +3,9 @@ TERMUX_PKG_DESCRIPTION="64-bit DOS core"
 TERMUX_PKG_LICENSE="GPL-3.0"
 TERMUX_PKG_MAINTAINER="@stsp"
 TERMUX_PKG_VERSION=1.10
-TERMUX_PKG_SRCURL=https://github.com/dosemu2/fdpp/archive/refs/tags/${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=fd6e4332ab3756acff10511d7a97af8c6eb231861341f8b4194b22011a8dc749
+TERMUX_PKG_REVISION=99
+TERMUX_PKG_SRCURL=git+https://github.com/dosemu2/fdpp
+TERMUX_PKG_GIT_BRANCH=master
 TERMUX_PKG_BUILD_DEPENDS="nasm-segelf-cross, libelf, thunk-gen-cross"
 TERMUX_PKG_DEPENDS="libelf"
 
