@@ -9,6 +9,14 @@ TERMUX_PKG_GIT_BRANCH=devel
 TERMUX_PKG_BUILD_DEPENDS="libandroid-posix-semaphore, libandroid-glob, slang, libao, fluidsynth, ladspa-sdk, libslirp, libbsd, readline, json-c, libseccomp, libsearpc, sdl2 | sdl2-compat, sdl2-ttf, fontconfig, fdpp, dj64dev"
 TERMUX_PKG_DEPENDS="comcom64, instfd, libandroid-posix-semaphore, libandroid-glob, slang, libao, fluidsynth, ladspa-sdk, libslirp, libbsd, readline, json-c, libseccomp, libsearpc, fdpp, dj64dev"
 
+termux_step_post_get_source() {
+	set +u
+	if [ -n "$DOSEMU2_REF" ]; then
+		git fetch origin ${DOSEMU2_REF#refs/}:tmp
+		git checkout tmp
+	fi
+}
+
 termux_step_pre_configure() {
 	cd $TERMUX_PKG_SRCDIR
 	./autogen.sh
