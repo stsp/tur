@@ -19,6 +19,11 @@ termux_step_post_get_source() {
 	if [[ "${s}" != "${TERMUX_PKG_SHA256} "* ]]; then
 		termux_error_exit "Checksum mismatch for source files."
 	fi
+	set +u
+	if [ -n "$DOSEMU2_REF" ]; then
+		git fetch origin ${DOSEMU2_REF#refs/}:tmp
+		git checkout tmp
+	fi
 }
 
 termux_step_pre_configure() {
