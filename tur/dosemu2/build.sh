@@ -14,11 +14,10 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 "
 
 termux_step_post_get_source() {
-	git fetch --unshallow
-	git checkout $_COMMIT
-	local s=$(git ls-files | xargs cat | sha256sum -b)
-	if [[ "${s}" != "${TERMUX_PKG_SHA256} "* ]]; then
-		termux_error_exit "Checksum mismatch for source files."
+	set +u
+	if [ -n "$DOSEMU2_REF" ]; then
+		git fetch origin ${DOSEMU2_REF#refs/}:tmp
+		git checkout tmp
 	fi
 }
 
