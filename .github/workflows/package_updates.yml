@@ -17,23 +17,6 @@
 name: Package updates TUR
 
 on:
-  push:
-    branches:
-    - '**'
-    - '!master'
-    paths:
-    - 'tur/**'
-    - 'tur-on-device/**'
-    - 'tur-multilib/**'
-    - 'tur-hacking/**'
-  pull_request:
-    paths:
-    - 'tur/**'
-    - 'tur-on-device/**'
-    - 'tur-multilib/**'
-    - 'tur-hacking/**'
-  schedule:
-    - cron: "0 */6 * * *"
   workflow_dispatch:
     inputs:
       packages:

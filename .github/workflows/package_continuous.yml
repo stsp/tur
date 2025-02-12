@@ -17,16 +17,16 @@
 name: Packages-tur-continuous
 
 on:
-  push:
-    branches:
-    - master
-    - dev
-    - 'dev/**'
-    paths:
-    - 'tur-continuous/**'
-  pull_request:
-    paths:
-    - 'tur-continuous/**'
+#  push:
+#    branches:
+#    - master
+#    - dev
+#    - 'dev/**'
+#    paths:
+#    - 'tur-continuous/**'
+#  pull_request:
+#    paths:
+#    - 'tur-continuous/**'
   workflow_dispatch:
     inputs:
       packages:
