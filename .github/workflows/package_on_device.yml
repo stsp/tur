@@ -18,16 +18,16 @@
 name: Packages-TUR-on-Device
 
 on:
-  push:
-    branches:
-    - master
-    - dev
-    - 'dev/**'
-    paths:
-    - 'tur-on-device/**'
-  pull_request:
-    paths:
-    - 'tur-on-device/**'
+#  push:
+#    branches:
+#    - master
+#    - dev
+#    - 'dev/**'
+#    paths:
+#    - 'tur-on-device/**'
+#  pull_request:
+#    paths:
+#    - 'tur-on-device/**'
   workflow_dispatch:
     inputs:
       packages:
