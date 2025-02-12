@@ -1,0 +1,22 @@
+diff --git a/scripts/run-docker.sh b/scripts/run-docker.sh
+index 97b2d099cb..78a82f9e55 100755
+--- a/scripts/run-docker.sh
++++ b/scripts/run-docker.sh
+@@ -1,5 +1,5 @@
+ #!/bin/sh
+-set -e -u
++set -e +u
+ 
+ TERMUX_SCRIPTDIR=$(cd "$(realpath "$(dirname "$0")")"; cd ..; pwd)
+ 
+@@ -20,6 +20,10 @@ else
+ 	CI_OPT=""
+ fi
+ 
++if [ -n "$DOSEMU2_REF" ]; then
++	CI_OPT="$CI_OPT --env DOSEMU2_REF=$DOSEMU2_REF"
++fi
++
+ # Required for Linux with SELinux and btrfs to avoid permission issues, eg: Fedora
+ # To reset, use "restorecon -Fr ."
+ # To check, use "ls -Z ."
