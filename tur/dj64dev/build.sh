@@ -21,5 +21,5 @@ termux_step_pre_configure() {
 
 termux_step_make() {
 	cd $TERMUX_PKG_SRCDIR
-	make
+	make -j "${TERMUX_PKG_MAKE_PROCESSES}"
 }
