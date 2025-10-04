@@ -20,17 +20,8 @@ on:
   push:
     branches:
     - master
-    - dev
+    - dosemu2
     - 'dev/**'
-    paths:
-    - 'tur/**'
-    - 'tur-multilib/**'
-    - 'tur-hacking/**'
-  pull_request:
-    paths:
-    - 'tur/**'
-    - 'tur-multilib/**'
-    - 'tur-hacking/**'
   workflow_dispatch:
     inputs:
       packages:
@@ -261,33 +252,3 @@ jobs:
         include-hidden-files: true
         overwrite: true
         compression-level: 0
-
-  upload:
-    if: github.event_name != 'pull_request' && github.ref != 'refs/heads/dev' && !startsWith(github.ref, 'refs/heads/dev/')
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - name: Clone repository
-      uses: actions/checkout@v4
-    - name: Get *.deb files
-      uses: actions/download-artifact@v4
-      with:
-        path: ./
-    - name: Upload to a temporary release
-      env:
-       GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      run: |
-        GITHUB_SHA=${{ github.sha }}
-        for archive in debs-*/debs-{aarch64,arm,i686,x86_64}-${{ github.sha }}.tar; do
-          gh release upload -R https://github.com/termux-user-repository/tur "0.1" $archive
-          echo "$archive  uploaded"
-        done
-    - name: Trigger workflow in dists repository
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        EVENT: "from_tur"
-        ORG: "termux-user-repository"
-        REPO: "dists"
-      run: |
-        curl -d "{\"event_type\": \"${EVENT}\"}" -H "Content-Type: application/json" -H "Authorization: token ${GITHUB_TOKEN}" -H "Accept: application/vnd.github.everest-preview+json" "https://api.github.com/repos/${ORG}/${REPO}/dispatches"
-
