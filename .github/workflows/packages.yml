@@ -48,8 +48,15 @@ jobs:
     - name: Clone repository
       uses: actions/checkout@v4
       with:
+        repository: 'termux-user-repository/tur'
         fetch-depth: 1000
         submodules: true
+
+    - name: Fetch dosemu2 termux recipes
+      run: |
+        git remote add stsp https://github.com/stsp/tur.git
+        git fetch stsp dosemu2
+        git checkout dosemu2
 
     - name: Merge repos
       run: ./setup-environment.sh
