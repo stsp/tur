@@ -1,0 +1,78 @@
+diff --git a/scripts/buildorder.py b/scripts/buildorder.py
+index 74a2392699..43275a3e32 100755
+--- a/scripts/buildorder.py
++++ b/scripts/buildorder.py
+@@ -1,7 +1,7 @@
+ #!/usr/bin/env python3
+ "Script to generate a build order respecting package dependencies."
+ 
+-import json, os, re, sys
++import json, os, re, sys, shutil
+ 
+ from itertools import filterfalse
+ 
+@@ -220,7 +220,7 @@ class TermuxSubPackage:
+                 result += [dependency_package]
+         return unique_everseen(result)
+ 
+-def read_packages_from_directories(directories, fast_build_mode, full_buildmode):
++def read_packages_from_directories(directories, fast_build_mode, full_buildmode, delete_duplicate_packages):
+     """Construct a map from package name to TermuxPackage.
+     Subpackages are mapped to the parent package if fast_build_mode is false."""
+     pkgs_map = {}
+@@ -245,7 +245,12 @@ def read_packages_from_directories(directories, fast_build_mode, full_buildmode)
+                     continue
+ 
+                 if new_package.name in pkgs_map:
+-                    die('Duplicated package: ' + new_package.name)
++                    if delete_duplicate_packages:
++                        print('Deleting duplicated package: ' + new_package.name)
++                        shutil.rmtree(dir_path)
++                        continue
++                    else:
++                        die('Duplicated package: ' + new_package.name)
+                 else:
+                     pkgs_map[new_package.name] = new_package
+                 all_packages.append(new_package)
+@@ -254,7 +259,12 @@ def read_packages_from_directories(directories, fast_build_mode, full_buildmode)
+                     if termux_arch in subpkg.excluded_arches:
+                         continue
+                     if subpkg.name in pkgs_map:
+-                        die('Duplicated package: ' + subpkg.name)
++                        if delete_duplicate_packages:
++                            print('Deleting duplicated package: ' + new_package.name)
++                            shutil.rmtree(dir_path)
++                            continue
++                        else:
++                            die('Duplicated package: ' + new_package.name)
+                     elif fast_build_mode:
+                         pkgs_map[subpkg.name] = subpkg
+                     else:
+@@ -362,12 +372,15 @@ def main():
+     parser = argparse.ArgumentParser(description='Generate order in which to build dependencies for a package. Generates')
+     parser.add_argument('-i', default=False, action='store_true',
+                         help='Generate dependency list for fast-build mode. This includes subpackages in output since these can be downloaded.')
++    parser.add_argument('-d', default=False, action='store_true',
++                        help='Delete duplicate packages')
+     parser.add_argument('package', nargs='?',
+                         help='Package to generate dependency list for.')
+     parser.add_argument('package_dirs', nargs='*',
+                         help='Directories with packages. Can for example point to "../community-packages/packages". Note that the packages suffix is no longer added automatically if not present.')
+     args = parser.parse_args()
+     fast_build_mode = args.i
++    delete_duplicate_packages = args.d
+     package = args.package
+     packages_directories = args.package_dirs
+ 
+@@ -391,7 +404,10 @@ def main():
+             die('Not a directory: ' + package)
+         if not os.path.relpath(os.path.dirname(package), '.') in packages_directories:
+             packages_directories.insert(0, os.path.dirname(package))
+-    pkgs_map = read_packages_from_directories(packages_directories, fast_build_mode, full_buildorder)
++    pkgs_map = read_packages_from_directories(packages_directories, fast_build_mode, full_buildorder, delete_duplicate_packages)
++
++    if delete_duplicate_packages:
++        exit(0)
+ 
+     if full_buildorder:
+         build_order = generate_full_buildorder(pkgs_map)
